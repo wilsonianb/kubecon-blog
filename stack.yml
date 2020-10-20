@@ -18,4 +18,5 @@ functions:
     lang: hugo
     handler: ./blog
     image: alexellis2/blog:latest
-
+    environment:
+      write_debug: true
