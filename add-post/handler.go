@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/go-git/go-git/v5" // with go modules enabled (GO111MODULE=on or outside GOPATH)
-	ghttp "github.com/go-git/go-git/v5/plumbing/transport/http"
+	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
 	"github.com/pkg/errors"
 
 	// "github.com/go-git/go-git"
@@ -92,18 +92,14 @@ func clonePush(title string, body string) error {
 		return err
 	}
 
-	tokenBytes, err := ioutil.ReadFile("/var/openfaas/secrets/github-token")
+	publicKeys, err := ssh.NewPublicKeysFromFile("git", "/var/openfaas/secrets/id_rsa", "")
 	if err != nil {
 		return err
 	}
 
-	token := strings.TrimSpace(string(tokenBytes))
 	r, err := git.PlainClone(tmpPath, false, &git.CloneOptions{
-		Auth: &ghttp.BasicAuth{
-			Username: "alexellis",
-			Password: token,
-		},
-		URL: os.Getenv("GITHUB_REPO"),
+		Auth: publicKeys,
+		URL:  os.Getenv("GITHUB_REPO"),
 	})
 
 	if err != nil {
@@ -161,10 +157,7 @@ draft: false
 	fmt.Println(obj)
 
 	err = r.Push(&git.PushOptions{
-		Auth: &ghttp.BasicAuth{
-			Username: "alexellis",
-			Password: token,
-		},
+		Auth: publicKeys,
 	})
 	if err != nil {
 		return err
