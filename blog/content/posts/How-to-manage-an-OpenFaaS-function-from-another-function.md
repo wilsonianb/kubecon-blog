@@ -1,5 +1,5 @@
 ---
-title: "How manage an OpenFaaS function from another function"
+title: "How to manage an OpenFaaS function from another function"
 date: 2020-10-22T06:29:43Z
 draft: false
 ---
