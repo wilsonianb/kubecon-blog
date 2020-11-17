@@ -1,7 +1,7 @@
 baseURL = "https://wilsonianb.test.codiusfaas.net/blog/"
 languageCode = "en-us"
 title = "Alex's blog"
-theme = "ananke"
+theme = ["ananke", "webmonetization"]
 
 [params]
   monetization = "$pay.test.codiusfaas.net/wilsonianb-blog"
